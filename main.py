@@ -1,29 +1,41 @@
 # python3
+from queue import PriorityQueue
 
 def parallel_processing(n, m, data):
     output = []
-    # TODO: write the function for simulating parallel tasks, 
-    # create the output pairs
+    threads = PriorityQueue()
+
+    for i in range(n):
+        threads.put((0, i))
+
+    for i in range(m):
+        time, thread = threads.get()
+        output.append((thread, time))
+        threads.put((time + data[i], thread))
 
     return output
 
 def main():
-    # TODO: create input from keyboard
-    # input consists of two lines
-    # first line - n and m
-    # n - thread count 
-    # m - job count
-    n = 0
-    m = 0
+    n, m = map(int, input().split())
 
-    # second line - data 
-    # data - contains m integers t(i) - the times in seconds it takes any thread to process i-th job
-    data = []
+    if not ((1 <= n <= 10**5) or (1 <= m <= 10**5)):
+        print("Invalid input for n or m")
+        exit()
 
-    # TODO: create the function
-    result = parallel_processing(n,m,data)
+    data = list(map(int, input().split()))
+
+    if not (len(data) == m):
+        print("m and data lengths don't match")
+        exit()
+    for i in range(m):
+        if not (0 <= data[i] <= 10**9):
+            print("Invalid input for data")
+            exit()
     
-    # TODO: print out the results, each pair in it's own line
+    result = parallel_processing(n,m,data)
+
+    for i, j in result:
+        print(i, j)
 
 
 
